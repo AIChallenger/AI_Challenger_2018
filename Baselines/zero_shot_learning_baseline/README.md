@@ -39,7 +39,7 @@ Find the methodology paper here.
 -ai_challenger_zsl_20180321
 --zsl_a_animals_train_20180321
 --zsl_a_animals_test_20180321
---baseline
+--zero_shot_learning_baseline
 ```
 
 ### Running
