@@ -36,7 +36,7 @@ Find the methodology paper here.
 1. Download the data and code.
 1. Put the data and code in the following directory:
 ```
--ai_challenger_zsl_20180321
+-Baselines
 --zsl_a_animals_train_20180321
 --zsl_a_animals_test_20180321
 --zero_shot_learning_baseline
