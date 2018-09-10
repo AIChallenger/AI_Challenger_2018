@@ -20,8 +20,8 @@ This python script is used for calculating the accuracy of the test result,
 based on your submited file and the reference file containing ground truth.
 Usage:
 python fundus_lesion2018_eval.py --submit SUBMIT_FILEPATH --ref REF_FILEPATH
-A test case is provided, submited file is submit.json, reference file is ref.json, test it by:
-python fundus_lesion2018_eval.py --submit ./submission_example --ref ./groundtruth_example
+A test case is provided, submited file is submit directory, reference file is ref directory, test it by:
+python fundus_lesion2018_eval.py --submit ./submission_example.zip --ref ./groundtruth_example
 The accuracy of the submited result, error message and warning message will be printed.
 """
 
@@ -155,7 +155,7 @@ def _eval_result(submit_path, ref_path):
         cubes = 2
 
         # if submit file is zip file, upzip it
-        # submit_path = unzip_file(submit_path)
+        submit_path = unzip_file(submit_path)
 
         ret_detection = []
         ret_segmentation = []
@@ -211,9 +211,9 @@ def _eval_result(submit_path, ref_path):
         avg_detection = (REA_detection + SRF_detection + PED_detection) / 3
         avg_segmentation = (REA_segementation + SRF_segementation + PED_segementation) / 3
 
-        # shutil.rmtree(origin_submit_path)
+        shutil.rmtree(origin_submit_path)
     except Exception as ex:
-        # shutil.rmtree(origin_submit_path)
+        shutil.rmtree(origin_submit_path)
         result['err_code'] = 1
         result['error'] = str(ex)
         return result
