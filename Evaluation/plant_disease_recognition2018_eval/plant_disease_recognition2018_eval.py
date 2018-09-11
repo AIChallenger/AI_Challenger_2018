@@ -39,41 +39,38 @@ def evaluate(submit_file, reference_file):
     }
 
     try:
-        result_json = json.load(open(submit_file))
+        user_result_list = json.load(open(submit_file))
 
         f = open(reference_file)
-        im_cls_list = json.load(f)
+        ref_list = json.load(f)
         f.close()
 
-        if len(result_json) != len(im_cls_list):
+        if len(user_result_list) != len(ref_list):
             result['err_code'] = 1
+            result['error'] = 'length not equal'
             return result
 
-        im_cls_dict = {}
-        for each_im_cls in im_cls_list:
-            im_name = each_im_cls.get('image_id')
-
-            im_name = im_name.lower()
-            if im_name[-4:] == '.jpg':
-                im_name = im_name[0:-4]
-
-            label_id = each_im_cls.get('disease_class')
-            im_cls_dict[im_name] = label_id
+        user_result_dict = {}
+        for each_item in user_result_list:
+            image_id = each_item['image_id'].lower()
+            if image_id[-4:].lower() == '.jpg':
+                image_id = image_id[0:-4]
+            label_id = each_item['disease_class']
+            user_result_dict[image_id] = label_id
 
         corrects = 0
-        for each_item in result_json:
+        for each_item in ref_list:
             image_id = each_item['image_id'].lower()
-            if image_id[-4:] == '.jpg':
+            if image_id[-4:].lower() == '.jpg':
                 image_id = image_id[0:-4]
-
-            if int(each_item['disease_class']) == int(im_cls_dict[image_id]):
+            if int(each_item['disease_class']) == int(user_result_dict[image_id]):
                 corrects += 1
     except Exception as e:
         result['err_code'] = 1
         result['error'] = str(e)
         return result
 
-    accuracy = corrects / len(im_cls_list)
+    accuracy = corrects / len(ref_list)
     result['score'] = accuracy
     return result
 
