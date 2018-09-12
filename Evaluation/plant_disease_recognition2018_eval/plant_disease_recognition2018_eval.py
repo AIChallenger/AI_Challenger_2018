@@ -39,9 +39,9 @@ def evaluate(submit_file, reference_file):
     }
 
     try:
-        user_result_list = json.load(open(submit_file))
+        user_result_list = json.load(open(submit_file, encoding='utf-8'))
 
-        f = open(reference_file)
+        f = open(reference_file, encoding='utf-8')
         ref_list = json.load(f)
         f.close()
 
