@@ -157,7 +157,6 @@ def _eval_result(submit_path, ref_path):
         # if submit file is zip file, upzip it
         submit_path = unzip_file(submit_path)
 
-        ret_detection = []
         ret_segmentation = []
         submit_path_list_dir = os.listdir(submit_path)
 
@@ -166,54 +165,47 @@ def _eval_result(submit_path, ref_path):
         if len(submit_path_list_dir) == 1:
             submit_path = '{}/{}'.format(submit_path, os.listdir(submit_path)[0])
         cubes_list = os.listdir(ref_path)
+        no_detection = True
         for cube in cubes_list:
-            groud_truth = np.load(ref_path + '/%s' % cube)
+            ground_truth = np.load(ref_path + '/%s' % cube)
             prediction_path = submit_path + '/%s' % cube
             if not os.path.exists(prediction_path):
                 prediction_path = prediction_path.replace('_labelMark', '')
             prediction = np.load(prediction_path)
             if cube[-11:-4] == 'volumes':
-                ret = aic_fundus_lesion_segmentation(groud_truth, prediction)
+                ret = aic_fundus_lesion_segmentation(ground_truth, prediction)
                 ret_segmentation.append(ret)
             else:
-                ret = aic_fundus_lesion_classification(groud_truth, prediction)
-                ret_detection.append(ret)
-        REA_detection, SRF_detection, PED_detection = 0.0, 0.0, 0.0
+                if no_detection:
+                    detection_ref_all = ground_truth
+                    detection_pre_all = prediction
+                    no_detection = False
+                else:
+                    detection_ref_all = np.concatenate((detection_ref_all, ground_truth), axis=0)
+                    detection_pre_all = np.concatenate((detection_pre_all, prediction), axis=0)
+        ret_detection = aic_fundus_lesion_classification(detection_ref_all, detection_pre_all, num_samples=cubes*128)
+        REA_detection, SRF_detection, PED_detection = ret_detection[0], ret_detection[1], ret_detection[2]
         REA_segementation, SRF_segementation, PED_segementation = 0.0, 0.0, 0.0
-        n1, n2, n3, n4, n5, n6 = 0, 0, 0, 0, 0, 0
+        n1, n2, n3 = 0, 0, 0
         for i in range(cubes):
-            if not math.isnan(ret_detection[i][0]):
-                REA_detection += ret_detection[i][0]
-                n1 += 1
-            if not math.isnan(ret_detection[i][1]):
-                SRF_detection += ret_detection[i][1]
-                n2 += 1
-            if not math.isnan(ret_detection[i][2]):
-                PED_detection += ret_detection[i][2]
-                n3 += 1
             if not math.isnan(ret_segmentation[i][1]):
                 REA_segementation += ret_segmentation[i][1]
-                n4 += 1
+                n1 += 1
             if not math.isnan(ret_segmentation[i][2]):
                 SRF_segementation += ret_segmentation[i][2]
-                n5 += 1
+                n2 += 1
             if not math.isnan(ret_segmentation[i][3]):
                 PED_segementation += ret_segmentation[i][3]
-                n6 += 1
+                n3 += 1
 
-        # because of cubes on real environment is 15, here may have an error
-        REA_detection /= n1
-        SRF_detection /= n2
-        PED_detection /= n3
-        REA_segementation /= n4
-        SRF_segementation /= n5
-        PED_segementation /= n6
+        REA_segementation /= n1
+        SRF_segementation /= n2
+        PED_segementation /= n3
         avg_detection = (REA_detection + SRF_detection + PED_detection) / 3
         avg_segmentation = (REA_segementation + SRF_segementation + PED_segementation) / 3
 
         shutil.rmtree(origin_submit_path)
     except Exception as ex:
-        shutil.rmtree(origin_submit_path)
         result['err_code'] = 1
         result['error'] = str(ex)
         return result
@@ -251,4 +243,3 @@ if __name__ == '__main__':
     result = _eval_result(args.submit, args.ref)
     print('Evaluation time of your result: %f s' % (time.time() - start_time))
     print(result)
-
