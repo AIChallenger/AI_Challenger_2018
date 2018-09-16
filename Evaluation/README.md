@@ -10,3 +10,6 @@
 
 ./sentiment_analysis2018_eval
 - Sample submission for Fine-grained Sentiment Analysis of User Reviews
+
+./autonomous_driving_perception2018_eval
+- valuation utility for Autonomous Driving Perception
