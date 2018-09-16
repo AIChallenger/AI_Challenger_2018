@@ -4,7 +4,7 @@ Autonomous Driving Perception is a task of AI Challenger 全球AI挑战赛。Thi
 ```
 python autonomous_driving_perception2018_eval.py --submit SUBMIT_FILEPATH --ref REF_FILEPATH
 ```
-A test case is provided, submited file is submit directory, reference file is ref directory, test it by:
+A test case is provided, submited file is .zip file, reference file is ref directory, test it by:
 ```
 python autonomous_driving_perception2018_eval.py --submit ./submission.zip --ref ./ref
 ```
