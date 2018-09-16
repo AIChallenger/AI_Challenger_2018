@@ -65,17 +65,6 @@ def unzip_file(file_path):
     return result_file_path
 
 
-def http_post(url, tid, status, mAP, mIOU):
-    # the dict of valus to be posted
-    values = {'tid': str(tid), 'status': int(status), 'mAP': mAP, 'mIOU': mIOU}
-    # convert dict format into json file
-    jdata = json.dumps(values)
-    header = {}
-    # post the predicion results
-    response = requests.post(url, data=jdata, headers=header)
-    return response
-
-
 def get_detection_scores(gt_path, prediction_path):
     try:
         mAP, _ = evaluate.evaluate_detection(gt_path, prediction_path)
