@@ -12,4 +12,7 @@
 - Sample submission for Fine-grained Sentiment Analysis of User Reviews
 
 ./autonomous_driving_perception2018_eval
-- valuation utility for Autonomous Driving Perception
+- Evaluation utility for Autonomous Driving Perception
+
+./oqmrc2018_eval
+- Evaluation utility for Opinion Questions Machine Reading Comprehension
