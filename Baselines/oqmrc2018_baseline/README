@@ -1,0 +1,19 @@
+baseline是基于pytorch实现的论文《Multiway Attention Networks for Modeling Sentence Pairs》
+
+python 2.7
+需要 pytorch 0.4.1 以及jieba分词
+
+1.预处理并训练
+
+首先将数据保存在data文件夹下面 并解压
+
+然后运行
+
+python train.py --cuda
+
+2. 测试
+
+python inference.py --data data/ai_challenger_oqmrc_testa_20180816/ai_challenger_oqmrc_testa.json --output prediction.txt
+
+
+3. 在testa集合上的一次测试结果accuracy为0.682，对应测试文件为prediction.a.txt
