@@ -1,0 +1,82 @@
+MT evaluation scorer began on 2017 Sep 14 at 17:26:26
+command line:  ./tools/mteval-v11b.pl -s data1/src.sgm -r work-demo1/ref.seg.sgm -t work-demo1/hyp.seg.sgm -c
+  Evaluation of en-to-zh translation using:
+    src set "newsdev2017" (2 docs, 27 segs)
+    ref set "newsdev2017" (1 refs)
+    tst set "newsdev2017" (1 systems)
+
+12 14  min_ref:14, min_cand_ref: 12 doc: 12 cum: 12 
+74 106  min_ref:106, min_cand_ref: 74 doc: 74 cum: 86 
+95 126  min_ref:126, min_cand_ref: 95 doc: 95 cum: 181 
+41 46  min_ref:46, min_cand_ref: 41 doc: 41 cum: 222 
+21 29  min_ref:29, min_cand_ref: 21 doc: 21 cum: 243 
+60 65  min_ref:65, min_cand_ref: 60 doc: 60 cum: 303 
+53 74  min_ref:74, min_cand_ref: 53 doc: 53 cum: 356 
+32 33  min_ref:33, min_cand_ref: 32 doc: 32 cum: 388 
+32 27  min_ref:27, min_cand_ref: 27 doc: 27 cum: 415 
+41 46  min_ref:46, min_cand_ref: 41 doc: 41 cum: 456 
+26 36  min_ref:36, min_cand_ref: 26 doc: 26 cum: 482 
+56 72  min_ref:72, min_cand_ref: 56 doc: 56 cum: 538 
+62 69  min_ref:69, min_cand_ref: 62 doc: 62 cum: 600 
+43 50  min_ref:50, min_cand_ref: 43 doc: 43 cum: 643 
+59 71  min_ref:71, min_cand_ref: 59 doc: 59 cum: 702 
+79 93  min_ref:93, min_cand_ref: 79 doc: 79 cum: 781 
+19 19  min_ref:19, min_cand_ref: 19 doc: 19 cum: 800 
+45 61  min_ref:61, min_cand_ref: 45 doc: 45 cum: 845 
+59 69  min_ref:69, min_cand_ref: 59 doc: 59 cum: 904 
+51 63  min_ref:63, min_cand_ref: 51 doc: 51 cum: 955 
+21 21  min_ref:21, min_cand_ref: 21 doc: 21 cum: 976 
+11 16  min_ref:16, min_cand_ref: 11 doc: 11 cum: 11 
+39 52  min_ref:52, min_cand_ref: 39 doc: 39 cum: 50 
+71 77  min_ref:77, min_cand_ref: 71 doc: 71 cum: 121 
+32 37  min_ref:37, min_cand_ref: 32 doc: 32 cum: 153 
+47 55  min_ref:55, min_cand_ref: 47 doc: 47 cum: 200 
+38 39  min_ref:39, min_cand_ref: 38 doc: 38 cum: 238 
+12 14  min_ref:14, min_cand_ref: 12 doc: 12 cum: 12 
+74 106  min_ref:106, min_cand_ref: 74 doc: 74 cum: 86 
+95 126  min_ref:126, min_cand_ref: 95 doc: 95 cum: 181 
+41 46  min_ref:46, min_cand_ref: 41 doc: 41 cum: 222 
+21 29  min_ref:29, min_cand_ref: 21 doc: 21 cum: 243 
+60 65  min_ref:65, min_cand_ref: 60 doc: 60 cum: 303 
+53 74  min_ref:74, min_cand_ref: 53 doc: 53 cum: 356 
+32 33  min_ref:33, min_cand_ref: 32 doc: 32 cum: 388 
+32 27  min_ref:27, min_cand_ref: 27 doc: 27 cum: 415 
+41 46  min_ref:46, min_cand_ref: 41 doc: 41 cum: 456 
+26 36  min_ref:36, min_cand_ref: 26 doc: 26 cum: 482 
+56 72  min_ref:72, min_cand_ref: 56 doc: 56 cum: 538 
+62 69  min_ref:69, min_cand_ref: 62 doc: 62 cum: 600 
+43 50  min_ref:50, min_cand_ref: 43 doc: 43 cum: 643 
+59 71  min_ref:71, min_cand_ref: 59 doc: 59 cum: 702 
+79 93  min_ref:93, min_cand_ref: 79 doc: 79 cum: 781 
+19 19  min_ref:19, min_cand_ref: 19 doc: 19 cum: 800 
+45 61  min_ref:61, min_cand_ref: 45 doc: 45 cum: 845 
+59 69  min_ref:69, min_cand_ref: 59 doc: 59 cum: 904 
+51 63  min_ref:63, min_cand_ref: 51 doc: 51 cum: 955 
+21 21  min_ref:21, min_cand_ref: 21 doc: 21 cum: 976 
+11 16  min_ref:16, min_cand_ref: 11 doc: 11 cum: 11 
+39 52  min_ref:52, min_cand_ref: 39 doc: 39 cum: 50 
+71 77  min_ref:77, min_cand_ref: 71 doc: 71 cum: 121 
+32 37  min_ref:37, min_cand_ref: 32 doc: 32 cum: 153 
+47 55  min_ref:55, min_cand_ref: 47 doc: 47 cum: 200 
+38 39  min_ref:39, min_cand_ref: 38 doc: 38 cum: 238 
+short_ref_length: 1466 min: 1214 
+bp: -0.207578253706755 exp_bp: 0.812549654262783
+NIST score = 5.5073  BLEU score = 0.2902 for system "DemoSystem"
+
+# ------------------------------------------------------------------------
+
+Individual N-gram scoring
+        1-gram   2-gram   3-gram   4-gram   5-gram   6-gram   7-gram   8-gram   9-gram
+        ------   ------   ------   ------   ------   ------   ------   ------   ------
+ NIST:  4.8615   0.5298   0.0959   0.0169   0.0031   0.0029   0.0021   0.0000   0.0000  "DemoSystem"
+
+ BLEU:  0.7104   0.4337   0.2781   0.1898   0.1305   0.0932   0.0672   0.0466   0.0309  "DemoSystem"
+
+# ------------------------------------------------------------------------
+Cumulative N-gram scoring
+        1-gram   2-gram   3-gram   4-gram   5-gram   6-gram   7-gram   8-gram   9-gram
+        ------   ------   ------   ------   ------   ------   ------   ------   ------
+ NIST:  4.8615   5.3913   5.4873   5.5041   5.5073   5.5101   5.5122   5.5122   5.5122  "DemoSystem"
+
+ BLEU:  0.5773   0.4510   0.3582   0.2902   0.2373   0.1961   0.1634   0.1361   0.1128  "DemoSystem"
+MT evaluation scorer ended on 2017 Sep 14 at 17:26:26
