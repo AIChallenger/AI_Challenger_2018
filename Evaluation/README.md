@@ -19,3 +19,6 @@
 
 ./english_chinese_machine_translation2018_eval
 - Evaluation utility for English-Chinese Machine Translation
+
+./weather_forecasting2018_eval
+- Evaluation utility for Weather Forecasting
