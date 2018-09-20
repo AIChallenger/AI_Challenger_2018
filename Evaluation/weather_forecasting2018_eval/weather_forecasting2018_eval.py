@@ -120,7 +120,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--submit',
         type=str,
-        default='./pred.csv',
+        default='./fore.csv',
         help="""\
                 Path to submited file\
             """
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ref',
         type=str,
-        default='./ans.csv',
+        default='./obs.csv',
         help="""
                 Path to reference file
             """
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--anen',
         type=str,
-        default='./ans.csv',
+        default='./anen.csv',
         help="""
                     Path to anen file
                 """
