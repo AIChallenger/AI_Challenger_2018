@@ -103,6 +103,8 @@ RUN cd /software && \
 
 RUN rm -rf /var/lib/apt/lists/*
 
+# 依赖软件安装
+RUN pip install -r requirements.txt -i http://pypi.douban.com/simple  --trusted-host pypi.douban.com
 
 ###############################################
 # 以上部分用户可定制，以下部分不可删除
@@ -111,6 +113,4 @@ RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /data
 COPY . .
 
-# 依赖软件安装
-RUN pip install -r requirements.txt -i http://pypi.douban.com/simple  --trusted-host pypi.douban.com
 ```

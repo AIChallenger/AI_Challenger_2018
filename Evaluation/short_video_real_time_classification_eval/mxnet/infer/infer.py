@@ -7,7 +7,7 @@ class ServerApi(object):
     """
     统一算法预测接口类：
     **注**：
-        1.handle为举办方验证接口，该接口必须返回预测分类值，参赛队伍需具体实现该接口
+        1.handle为举办方验证接口，该接口必须返回预测分类list eg:[1, 3, 4]，参赛队伍需具体实现该接口
         2.模型装载操作必须在初始化方法中进行
         3.初始化方法必须提供gpu_id参数
         3.其他接口都为参考，可以选择实现或删除
@@ -43,6 +43,8 @@ class ServerApi(object):
         """
         算法处理
         :param video_dir: 待处理单视频路径
-        :return: 返回预测分类
+        :return: 返回预测分类列表 eg:[1, 3, 4]
         """
-        return random.randint(0, 50)
+        return random.sample(range(0, 60), 3)
+
+

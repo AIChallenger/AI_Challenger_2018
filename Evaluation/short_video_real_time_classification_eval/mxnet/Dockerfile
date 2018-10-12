@@ -31,3 +31,4 @@ COPY . .
 
 # 依赖软件安装
 RUN pip install -r requirements.txt -i http://pypi.douban.com/simple  --trusted-host pypi.douban.com
+
