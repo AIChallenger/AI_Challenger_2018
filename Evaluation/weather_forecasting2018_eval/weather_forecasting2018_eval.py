@@ -19,9 +19,9 @@ Weather Forecasting is a task of AI Challenger 全球AI挑战赛
 This python script is used for calculating the accuracy of the test result,
 based on your submited file and the reference file containing ground truth.
 Usage:
-python weather_forecasting2018_eval.py --submit SUBMIT_FILEPATH --ref REF_FILEPATH --anen ANEN_FILEPATH
-A test case is provided, submited file is fore.csv, reference file is obs.csv, predicted by Institute of Urban Meteorology is anen.csv, test it by:
-python weather_forecasting2018_eval.py --submit ./fore.csv --ref ./obs.csv --anen ./anen.csv
+python weather_forecasting2018_eval.py --submit SUBMIT_FILEPATH --obs OBSERVATION_FILEPATH --fore RMAPS_FILEPATH
+A test case is provided, submited file is anene.csv, observation file is obs.csv, RMAPS result is anen.csv, test it by:
+python weather_forecasting2018_eval.py --submit ./anen.csv --obs ./obs.csv --fore ./fore.csv
 The accuracy of the submited result, error message and warning message will be printed.
 """
 
@@ -63,9 +63,9 @@ def score_bias(data_obs, data_fore):
 def _eval_result(fore_file, obs_file, anen_file):
     '''
     cal score
-    :param fore_file: predicted by contestant
-    :param obs_file: right answer
-    :param anen_file: predicted by Institute of Urban Meteorology
+    :param fore_file: 超算结果
+    :param obs_file: 正确答案
+    :param anen_file: 选手提交结果
     :return:
     '''
     # eval the error rate
@@ -80,7 +80,15 @@ def _eval_result(fore_file, obs_file, anen_file):
     try:
         data_obs = pd.read_csv(obs_file, encoding='gbk')
         data_fore = pd.read_csv(fore_file, encoding='gbk')
-        data_anen = pd.read_csv(anen_file, encoding='gbk')
+
+        delimiter_list = [',', ';', ' ,', '    ', '  ', ' ', '\t']
+        data_anen_columns_list = []
+        for each_delimiter in delimiter_list:
+            data_anen = pd.read_csv(anen_file, encoding='gbk', delimiter=each_delimiter)
+            old_data_anen_columns_list = list(data_anen.columns)
+            data_anen_columns_list = [_ for _ in old_data_anen_columns_list if _.strip() != '']
+            if len(data_anen_columns_list) == 4:
+                break
 
         for i in data_obs:
             t = list(data_obs[data_obs[i] == -9999].index)
@@ -88,15 +96,29 @@ def _eval_result(fore_file, obs_file, anen_file):
             data_fore = data_fore.drop(t)
             data_anen = data_anen.drop(t)
 
+        no_list = [_.strip() for _ in data_obs['  OBS_data']]
+        for each_no in no_list:
+            # if each_no.split('_')[1] in set():
+            if each_no.split('_')[1] in set(['00', '01', '02', '03']):
+                real_no = '  {each_no}'.format(**locals())
+                this_index = list(data_obs[data_obs['  OBS_data'] == real_no].index)
+                data_obs = data_obs.drop(this_index)
+                data_fore = data_fore.drop(this_index)
+                data_anen = data_anen.drop(this_index)
+
         # 超算rmse
+        data_anen_dict = {}
+        for each_anen_column in data_anen_columns_list:
+            data_anen_dict[each_anen_column.strip()] = data_anen[each_anen_column]
+
         t2m_rmse = rmse(data_obs['       t2m'], data_fore['       t2m'])
         rh2m_rmse = rmse(data_obs['      rh2m'], data_fore['      rh2m'])
         w10m_rmse = rmse(data_obs['      w10m'], data_fore['      w10m'])
 
         # anenrmse
-        t2m_rmse1 = rmse(data_obs['       t2m'], data_anen['       t2m'])
-        rh2m_rmse1 = rmse(data_obs['      rh2m'], data_anen['      rh2m'])
-        w10m_rmse1 = rmse(data_obs['      w10m'], data_anen['      w10m'])
+        t2m_rmse1 = rmse(data_obs['       t2m'], data_anen_dict['t2m'])
+        rh2m_rmse1 = rmse(data_obs['      rh2m'], data_anen_dict['rh2m'])
+        w10m_rmse1 = rmse(data_obs['      w10m'], data_anen_dict['w10m'])
 
         # 降低率得分
         score_all = (score(t2m_rmse1, t2m_rmse) + score(rh2m_rmse1, rh2m_rmse) + score(w10m_rmse1, w10m_rmse)) / 3
@@ -106,7 +128,10 @@ def _eval_result(fore_file, obs_file, anen_file):
 
         result['score'] = score_all
         result['score_extra'] = {
-            'bias_fore': score_bias_fore
+            'bias_fore': score_bias_fore,
+            't2m_rmse': t2m_rmse1,
+            'rh2m_rmse': rh2m_rmse1,
+            'w10m_rmse': w10m_rmse1
         }
     except Exception as e:
         result['err_code'] = 1
@@ -120,32 +145,32 @@ if __name__ == '__main__':
     parser.add_argument(
         '--submit',
         type=str,
-        default='./fore.csv',
+        default='./anen.csv',
         help="""\
                 Path to submited file\
             """
     )
 
     parser.add_argument(
-        '--ref',
+        '--obs',
         type=str,
         default='./obs.csv',
         help="""
-                Path to reference file
-            """
+            Path to true result file
+        """
     )
 
     parser.add_argument(
-        '--anen',
+        '--fore',
         type=str,
-        default='./anen.csv',
+        default='./fore.csv',
         help="""
-                    Path to anen file
-                """
+            Path to RMAPS file
+        """
     )
 
     args = parser.parse_args()
     start_time = time.time()
-    result = _eval_result(args.submit, args.ref, args.anen)
+    result = _eval_result(args.fore, args.obs, args.submit)
     print(time.time() - start_time)
     print(result)
