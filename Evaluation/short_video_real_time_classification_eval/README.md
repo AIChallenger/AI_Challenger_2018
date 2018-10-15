@@ -46,12 +46,6 @@
 └── requirements.txt
 ```
 
-#### 镜像验证方式
-* 采用AI训练平台进行验证，具体配置如下：
-    - 文件入口配置：http://xxx.ufile.ucloud.com.cn/data/
-    - 文件输出配置：http://xxx.ufile.ucloud.com.cn/output/
-    - 启动入口配置：/data/data/run.py
-    
 
 ### 构建示例程序
 * [mxnet版本构建样例](mxnet/README.md)
