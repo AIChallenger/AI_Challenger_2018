@@ -60,6 +60,14 @@ def score_bias(data_obs, data_fore):
     return score
 
 
+def delete_non_value(data_obs, data_fore, data_anen, column):
+    t = list(data_obs[data_obs[column] == -9999].index)
+    data_obs_t2m = data_obs[column].drop(t)
+    data_fore_t2m = data_fore[column].drop(t)
+    data_anen_t2m = data_anen[column.strip()].drop(t)
+    return data_obs_t2m, data_fore_t2m, data_anen_t2m
+
+
 def _eval_result(fore_file, obs_file, anen_file):
     '''
     cal score
@@ -90,12 +98,6 @@ def _eval_result(fore_file, obs_file, anen_file):
             if len(data_anen_columns_list) == 4:
                 break
 
-        for i in data_obs:
-            t = list(data_obs[data_obs[i] == -9999].index)
-            data_obs = data_obs.drop(t)
-            data_fore = data_fore.drop(t)
-            data_anen = data_anen.drop(t)
-
         no_list = [_.strip() for _ in data_obs['  OBS_data']]
         for each_no in no_list:
             # if each_no.split('_')[1] in set():
@@ -111,14 +113,31 @@ def _eval_result(fore_file, obs_file, anen_file):
         for each_anen_column in data_anen_columns_list:
             data_anen_dict[each_anen_column.strip()] = data_anen[each_anen_column]
 
-        t2m_rmse = rmse(data_obs['       t2m'], data_fore['       t2m'])
-        rh2m_rmse = rmse(data_obs['      rh2m'], data_fore['      rh2m'])
-        w10m_rmse = rmse(data_obs['      w10m'], data_fore['      w10m'])
+        data_obs_t2m, data_fore_t2m, data_anen_t2m = delete_non_value(data_obs, data_fore, data_anen_dict, '       t2m')
+        data_obs_rh2m, data_fore_rh2m, data_anen_rh2m = delete_non_value(data_obs, data_fore, data_anen_dict, '      rh2m')
+        data_obs_w10m, data_fore_w10m, data_anen_w10m = delete_non_value(data_obs, data_fore, data_anen_dict, '      w10m')
+
+        # t2m_rmse = rmse(data_obs['       t2m'], data_fore['       t2m'])
+        # rh2m_rmse = rmse(data_obs['      rh2m'], data_fore['      rh2m'])
+        # w10m_rmse = rmse(data_obs['      w10m'], data_fore['      w10m'])
+        #
+        # # anenrmse
+        # t2m_rmse1 = rmse(data_obs['       t2m'], data_anen_dict['t2m'])
+        # rh2m_rmse1 = rmse(data_obs['      rh2m'], data_anen_dict['rh2m'])
+        # w10m_rmse1 = rmse(data_obs['      w10m'], data_anen_dict['w10m'])
+        t2m_rmse = rmse(data_obs_t2m, data_fore_t2m)
+        rh2m_rmse = rmse(data_obs_rh2m, data_fore_rh2m)
+        w10m_rmse = rmse(data_obs_w10m, data_fore_w10m)
 
         # anenrmse
-        t2m_rmse1 = rmse(data_obs['       t2m'], data_anen_dict['t2m'])
-        rh2m_rmse1 = rmse(data_obs['      rh2m'], data_anen_dict['rh2m'])
-        w10m_rmse1 = rmse(data_obs['      w10m'], data_anen_dict['w10m'])
+        t2m_rmse1 = rmse(data_obs_t2m, data_anen_t2m)
+        rh2m_rmse1 = rmse(data_obs_rh2m, data_anen_rh2m)
+        w10m_rmse1 = rmse(data_obs_w10m, data_anen_w10m)
+
+        # # anenrmse
+        # t2m_rmse1 = rmse(data_obs['       t2m'], data_anen['       t2m'])
+        # rh2m_rmse1 = rmse(data_obs['      rh2m'], data_anen['      rh2m'])
+        # w10m_rmse1 = rmse(data_obs['      w10m'], data_anen['      w10m'])
 
         # 降低率得分
         score_all = (score(t2m_rmse1, t2m_rmse) + score(rh2m_rmse1, rh2m_rmse) + score(w10m_rmse1, w10m_rmse)) / 3
@@ -133,6 +152,12 @@ def _eval_result(fore_file, obs_file, anen_file):
             'rh2m_rmse': rh2m_rmse1,
             'w10m_rmse': w10m_rmse1
         }
+
+        print('t2m', 'rh2m', 'w10m')
+        print(t2m_rmse, rh2m_rmse, w10m_rmse)
+        print(t2m_rmse1, rh2m_rmse1, w10m_rmse1)
+        print(score_all)
+        print(score_bias_fore)
     except Exception as e:
         result['err_code'] = 1
         result['warning'] = str(e)
