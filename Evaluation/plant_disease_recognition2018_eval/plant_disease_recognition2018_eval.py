@@ -45,10 +45,10 @@ def evaluate(submit_file, reference_file):
         ref_list = json.load(f)
         f.close()
 
-        if len(user_result_list) != len(ref_list):
-            result['err_code'] = 1
-            result['error'] = 'length not equal'
-            return result
+        # if len(user_result_list) != len(ref_list):
+        #     result['err_code'] = 1
+        #     result['error'] = 'length not equal'
+        #     return result
 
         user_result_dict = {}
         for each_item in user_result_list:
@@ -63,6 +63,10 @@ def evaluate(submit_file, reference_file):
             image_id = each_item['image_id'].lower()
             if image_id[-4:].lower() == '.jpg':
                 image_id = image_id[0:-4]
+            if user_result_dict.get(image_id) is None:
+                result['err_code'] = 1
+                result['error'] = 'length not equal'
+                return result
             if int(each_item['disease_class']) == int(user_result_dict[image_id]):
                 corrects += 1
     except Exception as e:
