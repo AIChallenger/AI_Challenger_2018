@@ -1,5 +1,5 @@
 python==2.7.13
-numpy==1.13.1
+numpy==1.22.0
 pandas==0.20.3
 jieba==0.39
 sklearn==0.19.2
